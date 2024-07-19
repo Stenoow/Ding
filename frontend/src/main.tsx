@@ -16,14 +16,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Router>
         <Layout>
               <Routes>
-                  <Route path="/enterprise" element={<Enterprise />} >
-                      <Route path="/enterprise/:id" element={<EnterpriseDetail />} />
-                      <Route path="/enterprise/create" element={<EnterpriseCreate />} />
-                  </Route>
-                  <Route path="/store" element={<Store />}>
-                      <Route path="/store/:id" element={<StoreDetail />} />
-                      <Route path="/store/create" element={<StoreCreate />} />
-                  </Route>
+                  <Route path="/enterprise" element={<Enterprise />} />
+                  <Route path="/enterprise/:id" element={<EnterpriseDetail />} />
+                  <Route path="/enterprise/create" element={<EnterpriseCreate />} />
+
+                  <Route path="/store" element={<Store />} />
+                  <Route path="/store/:id" element={<StoreDetail />} />
+                  <Route path="/store/create" element={<StoreCreate />} />
+
                   <Route path="/product" />
                   <Route path="/" element={<Home />}/>
               </Routes>
