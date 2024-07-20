@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import StoreInterface from "../../Interfaces/Store.tsx";
-import {getAllProducts} from "../../Utils/Utils.tsx";
+import {getAllProducts, getAllStocks} from "../../Utils/Utils.tsx";
 import ProductInterface from "../../Interfaces/Product.tsx";
 import StockInterface from "../../Interfaces/Stock.tsx";
 
@@ -19,6 +19,13 @@ function StoreStock() {
     useEffect(() => {
         const fetchData = async () => {
             const productsFetched = await getAllProducts();
+            const stocksFetched = await getAllStocks(Number(id));
+            // set stocks fetched before products when products get MAJ the stocks is already ready
+            if (stocksFetched) {
+                setStocks(stocksFetched);
+            } else {
+                console.error('No stocks found or error occurred');
+            }
             if (productsFetched) {
                 setProducts(productsFetched);
             } else {
@@ -34,13 +41,6 @@ function StoreStock() {
             .catch((error: any) =>  {
                 console.error('Error fetching data:', error);
                 navigate(-1);
-            });
-        axios.get(`http://localhost:3000/stocks/${id}` )
-            .then((response: any)=> {
-                setStocks(response.data);
-            })
-            .catch((error: any) =>  {
-                console.error('Error fetching data:', error);
             });
     }, []);
 

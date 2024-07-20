@@ -1,6 +1,7 @@
 import axios from "axios";
 import EnterpriseInterface from "../Interfaces/Enterprise.tsx";
 import ProductInterface from "../Interfaces/Product.tsx";
+import StockInterface from "../Interfaces/Stock.tsx";
 
 export async function getAllEnterprises(): Promise<EnterpriseInterface[] | null> {
     try {
@@ -20,6 +21,21 @@ export async function getAllEnterprises(): Promise<EnterpriseInterface[] | null>
 export async function getAllProducts(): Promise<ProductInterface[] | null> {
     try {
         let response = await axios.get<ProductInterface[]>(`http://localhost:3000/products`);
+        if (response.status < 300 && response.status >= 200) {
+            return response.data;
+        } else {
+            console.error('Error fetching data:', response);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+}
+
+export async function getAllStocks(storeId: number): Promise<StockInterface[] | null> {
+    try {
+        let response = await axios.get<StockInterface[]>(`http://localhost:3000/stocks/${storeId}`);
         if (response.status < 300 && response.status >= 200) {
             return response.data;
         } else {
