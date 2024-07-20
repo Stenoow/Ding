@@ -4,7 +4,6 @@ import {
     Param,
     Post,
     Body,
-    Put,
     Delete,
 } from '@nestjs/common';
 import { Enterprises as EnterprisesModel } from '@prisma/client';
@@ -35,7 +34,7 @@ export class EnterprisesController {
     }
 
     @Post('enterprise/update')
-    async modifEnterprise(@Body() enterpriseData: { id: number, name: string }): Promise<EnterprisesModel> {
+    async updateEnterprise(@Body() enterpriseData: { id: number, name: string }): Promise<EnterprisesModel> {
         return this.enterpriseService.updateEnterprise({
             where: { id: Number(enterpriseData.id) },
             data: { name: enterpriseData.name },

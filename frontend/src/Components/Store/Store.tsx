@@ -1,14 +1,14 @@
 import '../../App.css'
 import {useEffect, useState} from "react";
 import axios from "axios";
-import EnterpriseInterface from "../../Interfaces/Enterprise";
 import {Link} from "react-router-dom";
+import StoreInterface from "../../Interfaces/Store.tsx";
 
-function Enterprise() {
-    const [data, setData] = useState<EnterpriseInterface[]>([]);
+function Store() {
+    const [data, setData] = useState<StoreInterface[]>([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/enterprises`)
+        axios.get(`http://localhost:3000/stores`)
             .then((response: any)=> {
                 setData(response.data)
             })
@@ -16,16 +16,16 @@ function Enterprise() {
     }, []);
     return (
         <div>
-            <h1>Ici sont affichées vos entreprises !</h1>
-            <Link to={"/enterprise/create"}>Créez une nouvelle entreprise</Link>
+            <h1>Ici sont affichées les magasins !</h1>
+            <Link to={"/store/create"}>Créez un nouveau magasin</Link>
 
-            {data.length > 0 ? data.map(enterprise => (
-                <li key={enterprise.id}><Link to={"/enterprise/" + enterprise.id}>{enterprise.name}</Link></li>
+            {data.length > 0 ? data.map(store => (
+                <li key={store.id}><Link to={"/store/" + store.id}>{store.name}</Link></li>
                 )) :
-                <p>Aucunes entreprises disponibles !</p>
+                <p>Aucuns magasins disponibles !</p>
             }
         </div>
     )
 }
 
-export default Enterprise
+export default Store

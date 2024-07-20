@@ -1,18 +1,23 @@
 import '../../App.css'
 import {useEffect, useState} from "react";
-import axios from "axios";
 import EnterpriseInterface from "../../Interfaces/Enterprise";
 import {Link} from "react-router-dom";
+import {getAllEnterprises} from "../../Utils/Utils.tsx";
 
 function Enterprise() {
     const [data, setData] = useState<EnterpriseInterface[]>([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/enterprises`)
-            .then((response: any)=> {
-                setData(response.data)
-            })
-            .catch((error: any) => console.error('Error fetching data:', error));
+        const fetchData = async () => {
+            const enterprises = await getAllEnterprises();
+            if (enterprises) {
+                setData(enterprises);
+            } else {
+                console.error('No enterprises found or error occurred');
+            }
+        };
+
+        fetchData();
     }, []);
     return (
         <div>

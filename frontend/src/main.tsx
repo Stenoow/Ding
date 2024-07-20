@@ -10,6 +10,10 @@ import EnterpriseCreate from "./Components/Enterprise/EnterpriseCreate.tsx";
 import Store from "./Components/Store/Store.tsx";
 import StoreDetail from "./Components/Store/StoreDetail.tsx";
 import StoreCreate from "./Components/Store/StoreCreate.tsx";
+import Product from "./Components/Product/Product.tsx";
+import ProductDetail from "./Components/Product/ProductDetail.tsx";
+import ProductCreate from "./Components/Product/ProductCreate.tsx";
+import StoreStock from "./Components/Store/StoreStock.tsx";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -22,9 +26,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
                   <Route path="/store" element={<Store />} />
                   <Route path="/store/:id" element={<StoreDetail />} />
+                  <Route path="/store/stock/:id" element={<StoreStock />} />
                   <Route path="/store/create" element={<StoreCreate />} />
 
-                  <Route path="/product" />
+                  <Route path="/product" element={<Product />} />
+                  <Route path="/product/:id" element={<ProductDetail />} />
+                  <Route path="/product/create" element={<ProductCreate />} />
                   <Route path="/" element={<Home />}/>
               </Routes>
         </Layout>
