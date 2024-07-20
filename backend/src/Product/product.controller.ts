@@ -25,6 +25,11 @@ export class ProductController {
         return this.productService.products({});
     }
 
+    @Get('stats/product/maxQuantity')
+    async getProductWithMaxQuantity(): Promise<ProductModel> {
+        return this.productService.getProductWithMaxQuantity();
+    }
+
     @Post('product/create')
     async createStore(@Body() productData: { name: string }): Promise<ProductModel> {
         const { name } = productData;

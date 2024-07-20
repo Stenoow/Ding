@@ -16,17 +16,17 @@ export class StockController {
     ) {}
 
     @Get('stock/:id')
-    async getStoreById(@Param('id') id: string): Promise<StockModel> {
+    async getStockById(@Param('id') id: string): Promise<StockModel> {
         return this.stockService.stock({ id: Number(id) });
     }
 
     @Get('stocks/:idStore?')
-    async getAllStores(@Param('idStore') idStore?: string): Promise<StockModel[]> {
+    async getAllStocks(@Param('idStore') idStore?: string): Promise<StockModel[]> {
         return this.stockService.stocks({where: { storeId: Number(idStore) } });
     }
 
     @Post('stock/create')
-    async createStore(@Body() stockData: { quantity: number, storeId: number, productId: number }): Promise<StockModel> {
+    async createStock(@Body() stockData: { quantity: number, storeId: number, productId: number }): Promise<StockModel> {
         const { quantity, storeId, productId } = stockData;
         return this.stockService.createStock({
             quantity: Number(quantity),
@@ -36,7 +36,7 @@ export class StockController {
     }
 
     @Post('stock/update')
-    async updateStore(@Body() stockData: { stockId: number, quantity: number, storeId: number, productId: number }): Promise<StockModel> {
+    async updateStock(@Body() stockData: { stockId: number, quantity: number, storeId: number, productId: number }): Promise<StockModel> {
         const { stockId, quantity, storeId, productId } = stockData;
         return this.stockService.updateStock({
             where: { id: Number(stockId) },
@@ -49,7 +49,7 @@ export class StockController {
     }
 
     @Delete('stock/:id')
-    async deleteStore(@Param('id') id: string): Promise<StockModel> {
+    async deleteStock(@Param('id') id: string): Promise<StockModel> {
         return this.stockService.deleteStock({ id: Number(id) });
     }
 }

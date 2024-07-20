@@ -64,4 +64,39 @@ export class ProductService {
             });
         });
     }
+
+    async getProductWithMaxQuantity(): Promise<Product | null> {
+        // Trouver tous les produits avec les quantités de stock
+        const productsWithQuantities = await this.prisma.product.findMany({
+            include: {
+                stocks: {
+                    select: { quantity: true },
+                },
+            },
+        });
+
+        // Vérifier si nous avons des produits
+        if (productsWithQuantities.length === 0) {
+            return null;
+        }
+
+        // Calculer la quantité totale pour chaque produit
+        const productQuantities = productsWithQuantities.map(product => {
+            const totalQuantity = product.stocks.reduce((sum, stock) => sum + stock.quantity, 0);
+            return { ...product, totalQuantity };
+        });
+
+        // Trouver le produit avec la quantité totale maximale
+        const productWithMaxQuantity = productQuantities.reduce((maxProduct, product) => {
+            if (product.totalQuantity > maxProduct.totalQuantity) {
+                return product;
+            }
+            return maxProduct;
+        }, productQuantities[0]);
+
+        // Retourner uniquement les propriétés du modèle Product
+        const { totalQuantity, ...productWithoutTotalQuantity } = productWithMaxQuantity;
+
+        return productWithoutTotalQuantity;
+    }
 }
