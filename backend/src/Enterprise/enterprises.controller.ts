@@ -1,18 +1,11 @@
-import {
-    Controller,
-    Get,
-    Param,
-    Post,
-    Body,
-    Delete,
-} from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete } from '@nestjs/common';
 import { Enterprises as EnterprisesModel } from '@prisma/client';
 import {EnterprisesService} from "./enterprises.service";
 
 @Controller()
 export class EnterprisesController {
     constructor(
-        private readonly enterpriseService: EnterprisesService,
+        private readonly enterpriseService: EnterprisesService
     ) {}
 
     @Get('enterprise/:id')
@@ -43,6 +36,8 @@ export class EnterprisesController {
 
     @Delete('enterprise/:id')
     async deleteEnterprise(@Param('id') id: string): Promise<EnterprisesModel> {
-        return this.enterpriseService.deleteEnterprise({ id: Number(id) });
+        const enterpriseId = Number(id);
+
+        return this.enterpriseService.deleteEnterprise({ id: enterpriseId });
     }
 }

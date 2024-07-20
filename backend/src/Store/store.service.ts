@@ -47,8 +47,21 @@ export class StoreService {
     }
 
     async deleteStore(where: Prisma.StoreWhereUniqueInput): Promise<Store> {
-        return this.prisma.store.delete({
-            where,
+        const storeId = where.id;
+
+        // Utilisation d'une transaction pour supprimer les stocks puis le magasin
+        return this.prisma.$transaction(async (prisma) => {
+            // Supprimer tous les stocks associés au magasin
+            await prisma.stock.deleteMany({
+                where: {
+                    storeId: storeId,
+                },
+            });
+
+            // Supprimer le magasin
+            return prisma.store.delete({
+                where,
+            });
         });
     }
 }

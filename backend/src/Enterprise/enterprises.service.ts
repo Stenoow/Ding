@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Enterprises } from '@prisma/client';
 import {PrismaService} from "../prisma.service";
+import {StoreService} from "../Store/store.service";
 
 @Injectable()
 export class EnterprisesService {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+        private storeService: StoreService
+    ) {}
 
     async enterprise( enterpriseWhereUniqueInput: Prisma.EnterprisesWhereUniqueInput ): Promise<Enterprises | null> {
         return this.prisma.enterprises.findUnique({
@@ -47,8 +51,26 @@ export class EnterprisesService {
     }
 
     async deleteEnterprise(where: Prisma.EnterprisesWhereUniqueInput): Promise<Enterprises> {
-        return this.prisma.enterprises.delete({
-            where,
+        const enterpriseId = where.id;
+
+        // Utilisation d'une transaction pour supprimer les magasins, puis l'entreprise
+        return this.prisma.$transaction(async (prisma) => {
+            // Supprimer tous les magasins associés à l'entreprise
+            const stores = await prisma.store.findMany({
+                where: {
+                    enterpriseId: enterpriseId,
+                },
+            });
+
+            // Supprimer chaque magasin en cascade
+            for (const store of stores) {
+                await this.storeService.deleteStore({ id: store.id });
+            }
+
+            // Supprimer l'entreprise
+            return prisma.enterprises.delete({
+                where,
+            });
         });
     }
 }

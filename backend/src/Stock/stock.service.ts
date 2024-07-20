@@ -51,4 +51,12 @@ export class StockService {
             where,
         });
     }
+
+    async deleteStocksByStoreId(storeId: number): Promise<void> {
+        await this.prisma.stock.deleteMany({
+            where: {
+                storeId: storeId,
+            },
+        });
+    }
 }
